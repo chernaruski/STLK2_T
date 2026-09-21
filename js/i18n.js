@@ -7,11 +7,26 @@
     return path.split(".").reduce((o, k) => (o && o[k] != null ? o[k] : null), obj);
   }
 
+  function detectBrowserLanguage() {
+    var list = [];
+    if (navigator.languages && navigator.languages.length) {
+      list = Array.prototype.slice.call(navigator.languages);
+    } else if (navigator.language) {
+      list = [navigator.language];
+    }
+    for (var i = 0; i < list.length; i++) {
+      var raw = String(list[i] || "").toLowerCase();
+      var code = raw.slice(0, 2);
+      if (code === "uk" || code === "be") code = "ru";
+      if (packs[code]) return code;
+    }
+    return "en";
+  }
+
   function init() {
     let saved = localStorage.getItem(KEY);
     if (saved === "uk") saved = "ru";
-    const nav = (navigator.language || "en").slice(0, 2);
-    setLanguage(saved || (packs[nav] ? nav : "en"));
+    setLanguage(saved || detectBrowserLanguage());
   }
 
   function setLanguage(code) {
