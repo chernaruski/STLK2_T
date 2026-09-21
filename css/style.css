@@ -60,7 +60,7 @@ html[lang="ru"] body {
 html[lang="ru"] .rail-title,
 html[lang="ru"] .brand-game,
 html[lang="ru"] .rail-unit,
-html[lang="ru"] .field,
+html[lang="ru"] .rail-credits,
 html[lang="ru"] .rail-legend > summary,
 html[lang="ru"] .region-head,
 html[lang="ru"] .count,
@@ -281,7 +281,7 @@ body::after {
     0 22px 56px rgba(0, 0, 0, 0.62),
     0 4px 24px rgba(20, 28, 14, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  padding: 0.55rem;
+  padding: 1.55rem 0.55rem 0.55rem;
 }
 
 .pda-bezel::before,
@@ -297,12 +297,12 @@ body::after {
 }
 
 .pda-bezel::before {
-  top: 0.85rem;
+  top: 0.55rem;
   left: 0.85rem;
 }
 
 .pda-bezel::after {
-  top: 0.85rem;
+  top: 0.55rem;
   right: 0.85rem;
 }
 
@@ -350,35 +350,57 @@ body::after {
 
 .pda-status {
   position: absolute;
-  top: 0.65rem;
+  top: 0.32rem;
   right: 2.2rem;
   z-index: 3;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  height: 1.15rem;
   font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  pointer-events: none;
+  line-height: 1;
+}
+
+#pda-signal {
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .pda-status-ico {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   display: block;
   opacity: 0.85;
   filter: drop-shadow(0 0 4px var(--amber-glow));
+  pointer-events: none;
+  flex-shrink: 0;
 }
 
 .pda-led {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--green);
   box-shadow: 0 0 6px var(--green-glow);
   animation: led-pulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: stretch;
+  height: 1.05rem;
+  margin-left: 0.1rem;
+  border: 1px solid var(--line);
+  background: rgba(8, 10, 6, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(212, 168, 75, 0.04);
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 button,
@@ -433,6 +455,55 @@ button.ghost.danger:hover {
   box-shadow: 0 0 0 1px rgba(196, 90, 72, 0.2);
 }
 
+button.lang-opt {
+  margin: 0;
+  padding: 0 0.42rem;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+button.lang-opt + button.lang-opt {
+  border-left: 1px solid var(--line-soft);
+}
+
+button.lang-opt:hover {
+  color: var(--text);
+  border-color: transparent;
+  box-shadow: none;
+  background: rgba(224, 154, 60, 0.08);
+}
+
+button.lang-opt:active {
+  transform: none;
+}
+
+button.lang-opt.is-active {
+  color: var(--cyan);
+  background: rgba(78, 200, 196, 0.1);
+  text-shadow: 0 0 8px rgba(78, 200, 196, 0.35);
+}
+
+button.lang-opt:focus-visible {
+  outline: 1px solid var(--amber-dim);
+  outline-offset: -1px;
+  z-index: 1;
+}
+
 button.active-mark {
   border-color: var(--amber);
   color: var(--amber);
@@ -448,14 +519,18 @@ button:focus-visible {
 
 .shell {
   display: grid;
-  grid-template-columns: minmax(240px, 300px) 1fr;
+  grid-template-columns: 15.75rem minmax(0, 1fr);
   min-height: inherit;
   max-width: none;
   margin: 0;
 }
 
 .rail {
-  padding: 1.5rem 1.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1.25rem 0.95rem;
   border-right: 1px solid var(--line-soft);
   background:
     radial-gradient(ellipse 80% 40% at 0% 100%, var(--rust), transparent 55%),
@@ -463,12 +538,13 @@ button:focus-visible {
     var(--panel);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   position: sticky;
   top: 0;
   height: 100vh;
   max-height: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .rail-brand {
@@ -496,8 +572,8 @@ button:focus-visible {
 }
 
 .brand-badge {
-  width: 3.75rem;
-  height: 3.75rem;
+  width: 3.25rem;
+  height: 3.25rem;
   flex-shrink: 0;
   display: grid;
   place-items: center;
@@ -513,8 +589,8 @@ button:focus-visible {
 }
 
 .brand-badge-ico {
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.6rem;
+  height: 1.6rem;
   display: block;
   filter: drop-shadow(0 0 5px var(--amber-glow));
 }
@@ -527,8 +603,8 @@ button:focus-visible {
 .brand-game {
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
-  letter-spacing: 0.08em;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--amber);
   text-shadow: 0 0 14px var(--amber-glow);
@@ -539,9 +615,9 @@ button:focus-visible {
 .rail-title {
   margin-top: 0.2rem;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
   line-height: 1.25;
@@ -549,14 +625,15 @@ button:focus-visible {
 
 /* 3 — telemetry chrome (quietest) */
 .rail-unit {
-  margin-top: 0.55rem;
+  margin-top: 0.5rem;
   font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
+  font-size: 0.56rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--cyan);
   opacity: 0.8;
   text-shadow: 0 0 10px rgba(78, 200, 196, 0.25);
+  overflow-wrap: anywhere;
 }
 
 .field {
@@ -680,9 +757,33 @@ button:focus-visible {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding-top: 0.5rem;
+  gap: 0.35rem;
+  padding-top: 0.55rem;
   border-top: 1px solid var(--line-soft);
+}
+
+.rail-credits {
+  margin: 0;
+  max-width: 100%;
+  padding: 0.25rem 0.1rem 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  opacity: 0.92;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.rail-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+  font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .main {
@@ -1292,11 +1393,17 @@ body.is-booted .card.is-flash {
 
   .pda-bezel {
     border-radius: 6px;
-    padding: 0.35rem;
+    padding: 1.35rem 0.35rem 0.35rem;
   }
 
   .pda-status {
-    display: none;
+    top: 0.28rem;
+    right: 1.5rem;
+    height: 1.05rem;
+  }
+
+  .lang-switch {
+    height: 0.95rem;
   }
 
   .shell {

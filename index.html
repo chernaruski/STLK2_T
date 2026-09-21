@@ -23,10 +23,15 @@
       <div class="pda-bezel">
         <span class="pda-screw-bl" aria-hidden="true"></span>
         <span class="pda-screw-br" aria-hidden="true"></span>
-        <div class="pda-status" aria-hidden="true">
-          <img class="pda-status-ico" src="assets/icons/radioactive.svg" alt="" width="12" height="12" />
-          <span class="pda-led" id="pda-led"></span>
+        <div class="pda-status">
+          <img class="pda-status-ico" src="assets/icons/radioactive.svg" alt="" width="12" height="12" aria-hidden="true" />
+          <span class="pda-led" id="pda-led" aria-hidden="true"></span>
           <span id="pda-signal">Signal · Emission clear</span>
+          <div class="lang-switch" id="lang-switch" role="group" aria-labelledby="lang-label">
+            <span class="visually-hidden" id="lang-label">Language</span>
+            <button type="button" class="lang-opt" data-lang="en" aria-pressed="false">EN</button>
+            <button type="button" class="lang-opt" data-lang="ru" aria-pressed="false">RU</button>
+          </div>
         </div>
         <div class="pda-screen">
           <div class="shell">
@@ -43,10 +48,6 @@
                 </div>
                 <div class="rail-unit" id="rail-unit">UNIT-07 · FIRMWARE 2.0 · ANOMALY NET</div>
               </div>
-              <label class="field">
-                <span id="lang-label">Language</span>
-                <select id="lang"></select>
-              </label>
               <div class="rail-progress">
                 <div class="rail-progress-label" id="progress-text"></div>
                 <div
@@ -72,6 +73,7 @@
                 <button type="button" id="btn-reset" class="ghost danger"></button>
                 <input type="file" id="file-import" accept="application/json,.json" hidden />
               </div>
+              <p class="rail-credits" id="rail-credits"></p>
             </aside>
 
             <main class="main">

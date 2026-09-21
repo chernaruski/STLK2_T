@@ -44,7 +44,7 @@
     status: document.getElementById("filter-status"),
     sort: document.getElementById("sort"),
     sortLabel: document.getElementById("sort-label"),
-    lang: document.getElementById("lang"),
+    langSwitch: document.getElementById("lang-switch"),
     langLabel: document.getElementById("lang-label"),
     list: document.getElementById("list"),
     progressBar: document.getElementById("progress-bar"),
@@ -61,6 +61,7 @@
     fileImport: document.getElementById("file-import"),
     toast: document.getElementById("toast"),
     railUnit: document.getElementById("rail-unit"),
+    railCredits: document.getElementById("rail-credits"),
     pdaSignal: document.getElementById("pda-signal"),
   };
 
@@ -699,23 +700,32 @@
     el.toast.appendChild(btn);
   }
 
+  function syncLangSwitch() {
+    if (!el.langSwitch) return;
+    var code = I18n.getLanguage();
+    var buttons = el.langSwitch.querySelectorAll(".lang-opt");
+    for (var i = 0; i < buttons.length; i++) {
+      var btn = buttons[i];
+      var on = btn.getAttribute("data-lang") === code;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+
   function chrome() {
     el.title.textContent = I18n.t("appTitle");
     if (el.railUnit) el.railUnit.textContent = I18n.t("unitId");
     if (el.pdaSignal) el.pdaSignal.textContent = I18n.t("signalOk");
+    if (el.railCredits) el.railCredits.textContent = I18n.t("credits");
     el.search.placeholder = I18n.t("searchPlaceholder");
     el.search.setAttribute("aria-label", I18n.t("searchPlaceholder"));
-    el.langLabel.textContent = I18n.t("language");
+    if (el.langLabel) el.langLabel.textContent = I18n.t("languageSwitch");
+    syncLangSwitch();
     el.btnExport.textContent = I18n.t("exportProgress");
     el.btnImport.textContent = I18n.t("importProgress");
     el.btnReset.textContent = I18n.t("resetProgress");
     el.legend.textContent = I18n.t("legendHint");
     if (el.legendLabel) el.legendLabel.textContent = I18n.t("legendLabel");
-
-    fillSelect(el.lang, [
-      ["en", "English"],
-      ["ru", "Русский"],
-    ], I18n.getLanguage());
 
     if (el.sort && el.sortLabel) {
       el.sortLabel.textContent = I18n.t("sortBy");
@@ -1125,10 +1135,16 @@
         el.search.select();
       }
     });
-    el.lang.addEventListener("change", function () {
-      I18n.setLanguage(el.lang.value);
-      render();
-    });
+    if (el.langSwitch) {
+      el.langSwitch.addEventListener("click", function (e) {
+        var btn = e.target.closest(".lang-opt");
+        if (!btn || !el.langSwitch.contains(btn)) return;
+        var next = btn.getAttribute("data-lang");
+        if (!next || next === I18n.getLanguage()) return;
+        I18n.setLanguage(next);
+        render();
+      });
+    }
     el.btnExport.addEventListener("click", function () {
       var blob = new Blob([JSON.stringify(state.progress, null, 2)], { type: "application/json" });
       var a = document.createElement("a");
