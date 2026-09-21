@@ -1,0 +1,6 @@
+﻿Icons in this folder are from Game-icons.net (Lorc), licensed CC BY 3.0:
+https://creativecommons.org/licenses/by/3.0/
+
+- radioactive.svg
+
+Attribution: Lorc / game-icons.net

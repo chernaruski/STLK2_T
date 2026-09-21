@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Exo+2:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -18,16 +18,24 @@
         <span class="pda-screw-bl" aria-hidden="true"></span>
         <span class="pda-screw-br" aria-hidden="true"></span>
         <div class="pda-status" aria-hidden="true">
+          <img class="pda-status-ico" src="assets/icons/radioactive.svg" alt="" width="12" height="12" />
           <span class="pda-led" id="pda-led"></span>
-          <span id="pda-signal">Signal</span>
+          <span id="pda-signal">Signal · Emission clear</span>
         </div>
         <div class="pda-screen">
           <div class="shell">
             <aside class="rail">
               <div class="rail-brand">
-                <div class="rail-sig">PDA</div>
-                <div class="rail-title" id="app-title">Field log</div>
-                <div class="rail-sub" id="rail-sub">Zone · Journal</div>
+                <div class="brand-plate">
+                  <div class="brand-badge" aria-hidden="true">
+                    <img class="brand-badge-ico" src="assets/icons/radioactive.svg" alt="" width="28" height="28" />
+                  </div>
+                  <div class="brand-copy">
+                    <div class="brand-game">S.T.A.L.K.E.R.&nbsp;2</div>
+                    <div class="rail-title" id="app-title">Field log</div>
+                  </div>
+                </div>
+                <div class="rail-unit" id="rail-unit">UNIT-07 · FIRMWARE 2.0 · ANOMALY NET</div>
               </div>
               <label class="field">
                 <span id="lang-label">Language</span>

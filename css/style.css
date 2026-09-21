@@ -1,25 +1,29 @@
 :root {
-  --bg: #0e110c;
-  --panel: #1a1f15;
-  --panel-2: #232a1c;
-  --panel-3: #2c3423;
-  --line: #46503a;
-  --line-soft: #323a29;
-  --text: #e4e7d4;
-  --muted: #9aa486;
-  --amber: #e8a845;
-  --amber-dim: #b07e2e;
-  --amber-glow: rgba(232, 168, 69, 0.28);
-  --green: #8fbc55;
-  --green-glow: rgba(143, 188, 85, 0.32);
+  --bg: #0c100a;
+  --panel: #171c12;
+  --panel-2: #1f2618;
+  --panel-3: #28301f;
+  --line: #4a5538;
+  --line-soft: #2e3624;
+  --text: #e6ebd4;
+  --muted: #8f9a72;
+  /* Zone phosphors — anomaly / HUD, not clean tech */
+  --amber: #f0a030;
+  --amber-dim: #b8741f;
+  --amber-glow: rgba(240, 160, 48, 0.34);
+  --green: #7dd64a;
+  --green-glow: rgba(125, 214, 74, 0.38);
   --red: #d06652;
-  --cyan: #6db4ce;
-  --side: #5aade0;
-  --phosphor: #e2ebc4;
-  --bezel: #1c1f17;
-  --bezel-edge: #3a4030;
-  --fog: rgba(100, 110, 75, 0.08);
+  --cyan: #4ec8c4;
+  --side: #3eb8c8;
+  --phosphor: #d8ef9a;
+  --bezel: #1a1c14;
+  --bezel-edge: #3e4430;
+  --fog: rgba(90, 110, 55, 0.1);
+  --rust: rgba(120, 70, 35, 0.14);
+  --dust: rgba(180, 170, 120, 0.06);
   --font: "Exo 2", "Segoe UI", "Helvetica Neue", sans-serif;
+  --display: "Oswald", "Exo 2", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", "Consolas", "Courier New", monospace;
   --fs: clamp(15px, 1vw, 17px);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -53,9 +57,9 @@ html[lang="ru"] body {
   line-height: 1.5;
 }
 
-html[lang="ru"] .rail-sig,
-html[lang="ru"] .rail-sub,
 html[lang="ru"] .rail-title,
+html[lang="ru"] .brand-game,
+html[lang="ru"] .rail-unit,
 html[lang="ru"] .field,
 html[lang="ru"] .rail-legend > summary,
 html[lang="ru"] .region-head,
@@ -67,12 +71,13 @@ html[lang="ru"] button.ghost {
 }
 
 body {
-  background-color: #080a07;
+  background-color: #070906;
   background-image:
-    radial-gradient(ellipse 90% 55% at 50% -8%, rgba(70, 78, 48, 0.35) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 85% 90%, rgba(90, 60, 30, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 35% at 10% 80%, rgba(40, 70, 55, 0.06) 0%, transparent 45%),
-    linear-gradient(180deg, #10140c 0%, #0a0c08 45%, #080a07 100%);
+    radial-gradient(ellipse 90% 55% at 50% -8%, rgba(70, 95, 35, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 78% 18%, rgba(240, 160, 48, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 85% 90%, rgba(100, 55, 25, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 10% 80%, rgba(40, 90, 70, 0.08) 0%, transparent 45%),
+    linear-gradient(180deg, #0e140a 0%, #090c07 45%, #070906 100%);
   overflow-x: hidden;
 }
 
@@ -131,8 +136,8 @@ body::after {
 }
 
 @keyframes led-pulse {
-  0%, 100% { opacity: 0.55; box-shadow: 0 0 4px var(--amber-glow); }
-  50% { opacity: 1; box-shadow: 0 0 10px var(--amber-glow); }
+  0%, 100% { opacity: 0.55; box-shadow: 0 0 4px var(--green-glow); }
+  50% { opacity: 1; box-shadow: 0 0 10px var(--green-glow); }
 }
 
 @keyframes card-in {
@@ -211,6 +216,8 @@ body::after {
   margin: 0 auto;
   min-height: calc(100vh - 2 * clamp(0.6rem, 1.4vw, 1.35rem));
   background:
+    radial-gradient(ellipse 40% 30% at 8% 92%, var(--rust), transparent 55%),
+    radial-gradient(ellipse 35% 28% at 94% 6%, var(--dust), transparent 50%),
     linear-gradient(145deg, #22251c 0%, var(--bezel) 40%, #12140f 100%);
   border: 1px solid var(--bezel-edge);
   border-radius: 10px;
@@ -295,17 +302,26 @@ body::after {
   gap: 0.4rem;
   font-family: var(--mono);
   font-size: 0.65rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
   pointer-events: none;
+}
+
+.pda-status-ico {
+  width: 12px;
+  height: 12px;
+  display: block;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 4px var(--amber-glow));
 }
 
 .pda-led {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--amber);
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
   animation: led-pulse 2.8s ease-in-out infinite;
 }
 
@@ -386,7 +402,8 @@ button:focus-visible {
   padding: 1.5rem 1.25rem;
   border-right: 1px solid var(--line-soft);
   background:
-    linear-gradient(180deg, rgba(224, 154, 60, 0.04) 0%, transparent 8%),
+    radial-gradient(ellipse 80% 40% at 0% 100%, var(--rust), transparent 55%),
+    linear-gradient(180deg, rgba(240, 160, 48, 0.05) 0%, transparent 10%),
     var(--panel);
   display: flex;
   flex-direction: column;
@@ -400,7 +417,7 @@ button:focus-visible {
 
 .rail-brand {
   position: relative;
-  padding-bottom: 0.85rem;
+  padding: 0.15rem 0 1rem;
   border-bottom: 1px solid var(--line-soft);
 }
 
@@ -409,37 +426,81 @@ button:focus-visible {
   position: absolute;
   left: 0;
   bottom: -1px;
-  width: 3.5rem;
-  height: 1px;
-  background: var(--amber);
-  box-shadow: 0 0 8px var(--amber-glow);
+  width: 4.5rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  box-shadow: 0 0 10px var(--amber-glow);
 }
 
-.rail-sig {
-  font-family: var(--mono);
-  color: var(--amber);
-  letter-spacing: 0.28em;
-  font-size: 0.72rem;
-  text-shadow: 0 0 12px var(--amber-glow);
+.brand-plate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.rail-title {
-  margin-top: 0.4rem;
-  font-size: 1.4rem;
-  font-weight: 650;
-  letter-spacing: 0.03em;
+.brand-badge {
+  width: 3.75rem;
+  height: 3.75rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(240, 160, 48, 0.14), transparent 55%),
+    radial-gradient(circle at 50% 55%, #1a2214 0%, #0c100a 70%);
+  border: 1px solid var(--amber-dim);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 0 14px var(--amber-glow),
+    inset 0 0 14px rgba(0, 0, 0, 0.5);
+}
+
+.brand-badge-ico {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: block;
+  filter: drop-shadow(0 0 5px var(--amber-glow));
+}
+
+.brand-copy {
+  min-width: 0;
+}
+
+/* 1 — product brand (loudest) */
+.brand-game {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--phosphor);
-  line-height: 1.2;
+  color: var(--amber);
+  text-shadow: 0 0 14px var(--amber-glow);
+  line-height: 1.05;
 }
 
-.rail-sub {
-  margin-top: 0.3rem;
+/* 2 — what this PDA does (secondary) */
+.rail-title {
+  margin-top: 0.2rem;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
+  line-height: 1.25;
+}
+
+/* 3 — telemetry chrome (quietest) */
+.rail-unit {
+  margin-top: 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  opacity: 0.8;
+  text-shadow: 0 0 10px rgba(78, 200, 196, 0.25);
 }
 
 .field {
@@ -894,24 +955,27 @@ button:focus-visible {
 
 .region-head {
   margin: 1.15rem 0 0.5rem;
-  padding: 0.5rem 0.2rem 0.4rem;
+  padding: 0.5rem 0.35rem 0.4rem 0.55rem;
   font-family: var(--mono);
   font-size: 0.82rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--side);
   border-bottom: 1px solid var(--line-soft);
+  border-left: 2px solid var(--cyan);
   position: sticky;
   top: 3.35rem;
   z-index: 30;
   background: linear-gradient(180deg, var(--bg) 60%, rgba(12, 14, 10, 0.92));
-  text-shadow: 0 0 16px rgba(74, 159, 216, 0.25);
+  text-shadow: 0 0 16px rgba(62, 184, 200, 0.28);
+  box-shadow: inset 0 -1px 0 rgba(78, 200, 196, 0.08);
 }
 
 .region-head::before {
-  content: "◈ ";
-  opacity: 0.55;
-  font-size: 0.75em;
+  content: "⌖ ";
+  opacity: 0.65;
+  font-size: 0.85em;
+  color: var(--cyan);
 }
 
 .chips {

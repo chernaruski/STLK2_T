@@ -58,7 +58,7 @@
     btnReset: document.getElementById("btn-reset"),
     fileImport: document.getElementById("file-import"),
     toast: document.getElementById("toast"),
-    railSub: document.getElementById("rail-sub"),
+    railUnit: document.getElementById("rail-unit"),
     pdaSignal: document.getElementById("pda-signal"),
   };
 
@@ -640,7 +640,7 @@
 
   function chrome() {
     el.title.textContent = I18n.t("appTitle");
-    if (el.railSub) el.railSub.textContent = I18n.t("railSub");
+    if (el.railUnit) el.railUnit.textContent = I18n.t("unitId");
     if (el.pdaSignal) el.pdaSignal.textContent = I18n.t("signalOk");
     el.search.placeholder = I18n.t("searchPlaceholder");
     el.search.setAttribute("aria-label", I18n.t("searchPlaceholder"));
