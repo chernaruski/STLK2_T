@@ -1,0 +1,17 @@
+# Editor / IDE
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local / temp
+*.log
+.tmp/
+.cache/
+node_modules/
