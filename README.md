@@ -4,6 +4,9 @@ Static PDA-style checklist for side content (EN / RU). Progress is stored in the
 
 Open `index.html` locally — no build step, no server required.
 
+**Live site (after Pages is enabled):**  
+https://chernaruski.github.io/STLK2_T/
+
 ## Files
 
 ```
@@ -11,40 +14,23 @@ index.html
 css/style.css
 js/app.js
 js/i18n.js
-js/data.js   ← catalog + EN/RU strings
+js/data.js
+.github/workflows/pages.yml   ← deploys to GitHub Pages on push
 ```
 
-## Deploy to GitHub Pages (new repo)
+## Enable GitHub Pages (one-time)
 
-Do this once you have created an empty GitHub repository (no README/license if you prefer a clean first push).
+1. Push this repo to GitHub (already: `chernaruski/STLK2_T`).
+2. Open **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions**.
+4. Push any commit (or re-run the **Deploy GitHub Pages** workflow under the **Actions** tab).
 
-### 1. Local repo (in this folder)
+The workflow copies `index.html`, `css/`, `js/`, and `.nojekyll` to Pages. Site URL:
 
-```bash
-git init
-git add .
-git commit -m "Initial commit: STALKER 2 field log"
-git branch -M main
-git remote add origin https://github.com/YOUR_USER/YOUR_REPO.git
-git push -u origin main
-```
+`https://chernaruski.github.io/STLK2_T/`
 
-Replace `YOUR_USER` / `YOUR_REPO` with your GitHub username and repo name.
+## Notes
 
-### 2. Enable Pages
-
-1. On GitHub: **Settings → Pages**
-2. **Source:** Deploy from a branch
-3. **Branch:** `main` → folder `/ (root)` → **Save**
-
-After a minute or two the site is at:
-
-`https://YOUR_USER.github.io/YOUR_REPO/`
-
-(If the repo is named `YOUR_USER.github.io`, the site is at the domain root instead.)
-
-### Notes
-
-- `.nojekyll` is included so GitHub does not run Jekyll on this static site.
-- Asset paths are relative (`css/…`, `js/…`), so project Pages URLs work without a custom `base`.
-- Do not commit secrets; this project has none.
+- Asset paths are relative, so the project Pages URL works as-is.
+- `.nojekyll` skips Jekyll processing on the static site.
+- Progress stays in each visitor’s browser; nothing is stored on the server.
