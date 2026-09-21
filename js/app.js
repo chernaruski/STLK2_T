@@ -146,6 +146,61 @@
     return TYPE_OF[item.category] || "extra";
   }
 
+  function isRelatedStep(item) {
+    return (
+      item.kind === "followup" ||
+      item.kind === "subobjective" ||
+      item.kind === "prerequisite"
+    );
+  }
+
+  var childrenOf = (function buildChildrenIndex() {
+    var map = {};
+    state.items.forEach(function (item) {
+      if (!item.parentId) return;
+      if (!map[item.parentId]) map[item.parentId] = [];
+      map[item.parentId].push(item);
+    });
+    return map;
+  })();
+
+  var itemsById = (function buildById() {
+    var map = {};
+    state.items.forEach(function (item) {
+      map[item.id] = item;
+    });
+    return map;
+  })();
+
+  function hasOpenRelated(id) {
+    var kids = childrenOf[id];
+    if (!kids) return false;
+    for (var i = 0; i < kids.length; i++) {
+      if (getStatus(kids[i].id) === "open") return true;
+    }
+    return false;
+  }
+
+  function passesSearch(item, q) {
+    if (!q) return true;
+    var hay = [
+      I18n.questName(item.id),
+      I18n.regionName(item.region),
+      I18n.locationText(item.location),
+      I18n.note(item.id, item.summary_en),
+      item.id,
+    ]
+      .join(" ")
+      .toLowerCase();
+    return hay.indexOf(q) !== -1;
+  }
+
+  function passesCoreFilters(item, q) {
+    if (!inFilter(state.region, item.region)) return false;
+    if (!inFilter(state.timing, item.pm ? "pm" : "pre")) return false;
+    return passesSearch(item, q);
+  }
+
   function fillSelect(select, pairs, current) {
     select.innerHTML = "";
     pairs.forEach(function (pair) {
@@ -389,12 +444,16 @@
   function statusRank(id) {
     var st = getStatus(id);
     if (st === "open") return 0;
+    if (hasOpenRelated(id)) return 0;
     if (st === "done") return 1;
     return 2;
   }
 
   function urgencyRank(item) {
-    return !item.pm && getStatus(item.id) === "open" ? 0 : 1;
+    if (!item.pm && getStatus(item.id) === "open") return 0;
+    // Keep a finished parent near open work while its sequence steps remain open.
+    if (hasOpenRelated(item.id)) return 0;
+    return 1;
   }
 
   function compareRoots(a, b) {
@@ -725,22 +784,44 @@
 
   function filtered() {
     var q = state.query.trim().toLowerCase();
+    var matched = {};
+
+    state.items.forEach(function (item) {
+      if (!passesCoreFilters(item, q)) return;
+      if (!inFilter(state.type, playerType(item))) return;
+      if (!inFilter(state.status, getStatus(item.id))) return;
+      matched[item.id] = true;
+    });
+
+    // Related steps are type "extra"; still show them under a matching parent.
+    Object.keys(matched).forEach(function (id) {
+      (childrenOf[id] || []).forEach(function (child) {
+        if (!isRelatedStep(child)) return;
+        if (!passesCoreFilters(child, q)) return;
+        if (!inFilter(state.status, getStatus(child.id))) return;
+        matched[child.id] = true;
+      });
+    });
+
+    // If the parent is filtered out (e.g. marked done while Status = Todo),
+    // keep unfinished sequence steps — and the parent for nesting context.
+    state.items.forEach(function (item) {
+      if (!isRelatedStep(item) || !item.parentId) return;
+      if (matched[item.id]) return;
+      if (!passesCoreFilters(item, q)) return;
+      if (!inFilter(state.status, getStatus(item.id))) return;
+      var parent = itemsById[item.parentId];
+      if (!parent || !passesCoreFilters(parent, q)) return;
+      var typeOk =
+        inFilter(state.type, playerType(item)) ||
+        inFilter(state.type, playerType(parent));
+      if (!typeOk) return;
+      matched[item.id] = true;
+      matched[parent.id] = true;
+    });
+
     return state.items.filter(function (item) {
-      if (!inFilter(state.region, item.region)) return false;
-      if (!inFilter(state.type, playerType(item))) return false;
-      if (!inFilter(state.timing, item.pm ? "pm" : "pre")) return false;
-      if (!inFilter(state.status, getStatus(item.id))) return false;
-      if (!q) return true;
-      var hay = [
-        I18n.questName(item.id),
-        I18n.regionName(item.region),
-        I18n.locationText(item.location),
-        I18n.note(item.id, item.summary_en),
-        item.id,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.indexOf(q) !== -1;
+      return matched[item.id];
     });
   }
 
