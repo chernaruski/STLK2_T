@@ -382,6 +382,37 @@ body::after {
   line-height: 1;
 }
 
+.pda-signal-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 10px;
+  margin-right: -0.05rem;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.pda-signal-bars i {
+  display: block;
+  width: 2px;
+  border-radius: 0.5px;
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green-glow);
+  opacity: 0.9;
+}
+
+.pda-signal-bars i:nth-child(1) { height: 3px; }
+.pda-signal-bars i:nth-child(2) { height: 5px; }
+.pda-signal-bars i:nth-child(3) { height: 7px; }
+.pda-signal-bars i:nth-child(4) { height: 10px; }
+
+.pda-carrier {
+  white-space: nowrap;
+  line-height: 1;
+  color: var(--text);
+  opacity: 0.92;
+}
+
 .pda-status-ico {
   width: 11px;
   height: 11px;
