@@ -71,53 +71,108 @@ html[lang="ru"] button.ghost {
 }
 
 body {
-  background-color: #070906;
-  background-image:
-    radial-gradient(ellipse 90% 55% at 50% -8%, rgba(70, 95, 35, 0.28) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 78% 18%, rgba(240, 160, 48, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 85% 90%, rgba(100, 55, 25, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 35% at 10% 80%, rgba(40, 90, 70, 0.08) 0%, transparent 45%),
-    linear-gradient(180deg, #0e140a 0%, #090c07 45%, #070906 100%);
+  background-color: #080a07;
   overflow-x: hidden;
 }
 
-/* Atmospheric fog veil */
-body::before {
-  content: "";
-  pointer-events: none;
+/* —— Soft Zone field (behind PDA) —— */
+.zone-field {
   position: fixed;
   inset: 0;
-  z-index: 9996;
-  background:
-    radial-gradient(ellipse 70% 45% at 30% 20%, var(--fog), transparent 60%),
-    radial-gradient(ellipse 55% 40% at 75% 70%, rgba(60, 70, 50, 0.05), transparent 55%);
-  animation: fog-drift 28s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #080a07;
 }
 
-/* Scanlines + film grain */
+/* Muted olive-grey sky → dirt. No landmarks. */
+.zone-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 55% at 50% -5%, rgba(70, 82, 55, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 15% 35%, rgba(50, 60, 42, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 35% at 88% 28%, rgba(40, 50, 36, 0.06) 0%, transparent 55%),
+    linear-gradient(
+      180deg,
+      #1a2018 0%,
+      #131812 22%,
+      #0e120c 48%,
+      #0a0d09 72%,
+      #060705 100%
+    );
+}
+
+/* Ground haze — fog sitting on dirt */
+.zone-haze {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: -2%;
+  height: min(48vh, 420px);
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 85%, rgba(85, 95, 65, 0.12) 0%, transparent 65%),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(60, 68, 45, 0.05) 25%,
+      rgba(40, 46, 30, 0.18) 55%,
+      rgba(18, 22, 14, 0.4) 100%
+    );
+  filter: blur(2px);
+}
+
+.zone-fog {
+  position: absolute;
+  inset: -12% -8%;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+
+.zone-fog-a {
+  background:
+    radial-gradient(ellipse 55% 35% at 28% 42%, rgba(120, 130, 95, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 30% at 72% 58%, rgba(80, 95, 65, 0.1) 0%, transparent 65%);
+  animation: zone-fog-drift-a 36s ease-in-out infinite alternate;
+}
+
+.zone-fog-b {
+  background:
+    radial-gradient(ellipse 60% 28% at 55% 70%, rgba(130, 135, 105, 0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 35% at 18% 75%, rgba(70, 80, 55, 0.08) 0%, transparent 60%);
+  animation: zone-fog-drift-b 48s ease-in-out infinite alternate;
+  opacity: 0.35;
+}
+
+@keyframes zone-fog-drift-a {
+  from { transform: translate3d(-2%, 1%, 0) scale(1); }
+  to { transform: translate3d(2.5%, -1.5%, 0) scale(1.04); }
+}
+
+@keyframes zone-fog-drift-b {
+  from { transform: translate3d(1.5%, -1%, 0) scale(1.03); }
+  to { transform: translate3d(-2%, 2%, 0) scale(1); }
+}
+
+/* Global scanlines — dialed down so the field stays soft */
 body::after {
   content: "";
   pointer-events: none;
   position: fixed;
   inset: 0;
   z-index: 9998;
-  opacity: 0.055;
+  opacity: 0.04;
   background-image:
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      rgba(0, 0, 0, 0.55) 2px,
-      rgba(0, 0, 0, 0.55) 3px
+      rgba(0, 0, 0, 0.5) 2px,
+      rgba(0, 0, 0, 0.5) 3px
     ),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
   animation: scan-drift 9s linear infinite;
-}
-
-@keyframes fog-drift {
-  from { transform: translate3d(-1.5%, 0, 0); }
-  to { transform: translate3d(1.5%, 0.8%, 0); }
 }
 
 @keyframes scan-drift {
@@ -223,7 +278,8 @@ body::after {
   border-radius: 10px;
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.55),
-    0 18px 48px rgba(0, 0, 0, 0.55),
+    0 22px 56px rgba(0, 0, 0, 0.62),
+    0 4px 24px rgba(20, 28, 14, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   padding: 0.55rem;
 }
@@ -1252,8 +1308,9 @@ body.is-booted .card.is-flash {
     transition-duration: 0.01ms !important;
   }
 
-  body::before,
-  body::after {
+  body::after,
+  .zone-fog-a,
+  .zone-fog-b {
     animation: none !important;
   }
 
