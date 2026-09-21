@@ -13,6 +13,8 @@
     E_EQ: "encounter",
     ANCQ: "encounter",
     DLC_EQ: "encounter",
+    UX_EQ: "encounter",
+    UX_ANCQ: "encounter",
     RQ: "trader",
     DLC_ANEQ: "radio",
   };
