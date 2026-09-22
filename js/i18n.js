@@ -62,6 +62,18 @@
     return cur || en || fallback || "";
   }
 
+  function hint(id, fallback) {
+    const cur = packs[current] && packs[current].hints && packs[current].hints[id];
+    const en = packs.en && packs.en.hints && packs.en.hints[id];
+    return cur || en || fallback || "";
+  }
+
+  function spoiler(id, fallback) {
+    const cur = packs[current] && packs[current].spoilers && packs[current].spoilers[id];
+    const en = packs.en && packs.en.spoilers && packs.en.spoilers[id];
+    return cur || en || fallback || "";
+  }
+
   function locationText(loc) {
     if (!loc) return "";
     const cur = packs[current] && packs[current].locations && packs[current].locations[loc];
@@ -80,6 +92,8 @@
     questName,
     regionName,
     note,
+    hint,
+    spoiler,
     locationText,
     getLanguage,
   };

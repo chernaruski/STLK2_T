@@ -24,13 +24,16 @@
         <span class="pda-screw-bl" aria-hidden="true"></span>
         <span class="pda-screw-br" aria-hidden="true"></span>
         <div class="pda-status">
-          <img class="pda-status-ico" src="assets/icons/radioactive.svg" alt="" width="12" height="12" aria-hidden="true" />
-          <span class="pda-led" id="pda-led" aria-hidden="true"></span>
           <span class="pda-signal-bars" aria-hidden="true">
             <i></i><i></i><i></i><i></i>
           </span>
           <span class="pda-carrier">ANOMALY NET</span>
-          <span id="pda-signal">Signal · Emission clear</span>
+          <span id="pda-signal">Signal</span>
+          <span class="pda-status-sep" aria-hidden="true">·</span>
+          <span class="pda-emission-status">
+            <span class="pda-led" id="pda-led" aria-hidden="true"></span>
+            <span id="pda-emission">Emission clear</span>
+          </span>
           <div class="lang-switch" id="lang-switch" role="group" aria-labelledby="lang-label">
             <span class="visually-hidden" id="lang-label">Language</span>
             <button type="button" class="lang-opt" data-lang="en" aria-pressed="false">EN</button>
@@ -82,6 +85,38 @@
 
             <main class="main">
               <header class="toolbar">
+                <div class="mode-switch" id="mode-switch" role="group" aria-labelledby="mode-label">
+                  <span class="visually-hidden" id="mode-label">Catalog mode</span>
+                  <button type="button" class="mode-opt" data-mode="side" aria-pressed="true">Side</button>
+                  <button type="button" class="mode-opt" data-mode="story" aria-pressed="false">Story</button>
+                </div>
+                <div
+                  class="campaign-switch"
+                  id="campaign-switch"
+                  role="group"
+                  aria-labelledby="campaign-label"
+                  hidden
+                >
+                  <span class="visually-hidden" id="campaign-label">Story campaign</span>
+                  <button type="button" class="campaign-opt" data-campaign="base" aria-pressed="true">Base</button>
+                  <button type="button" class="campaign-opt" data-campaign="coh" aria-pressed="false">Cost of Hope</button>
+                  <button type="button" class="campaign-opt" data-campaign="all" aria-pressed="false">All</button>
+                </div>
+                <div
+                  class="branch-switch"
+                  id="branch-switch"
+                  role="group"
+                  aria-labelledby="branch-label"
+                  hidden
+                >
+                  <span class="visually-hidden" id="branch-label">Story branch</span>
+                  <button type="button" class="branch-opt" data-branch="all" aria-pressed="true">All</button>
+                  <button type="button" class="branch-opt" data-branch="ward" data-branch-group="base" aria-pressed="false">Ward</button>
+                  <button type="button" class="branch-opt" data-branch="spark" data-branch-group="base" aria-pressed="false">Spark</button>
+                  <button type="button" class="branch-opt" data-branch="independent" data-branch-group="base" aria-pressed="false">Independent</button>
+                  <button type="button" class="branch-opt" data-branch="duty" data-branch-group="coh" aria-pressed="false" hidden>Duty</button>
+                  <button type="button" class="branch-opt" data-branch="freedom" data-branch-group="coh" aria-pressed="false" hidden>Freedom</button>
+                </div>
                 <input
                   type="search"
                   id="search"
