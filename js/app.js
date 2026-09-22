@@ -230,12 +230,15 @@
   }
 
   function campaignBranchSet() {
-    return state.campaign === "coh" ? COH_BRANCHES : BASE_BRANCHES;
+    if (state.campaign === "coh") return COH_BRANCHES;
+    if (state.campaign === "all") return BRANCHES;
+    return BASE_BRANCHES;
   }
 
   function branchAllowedForCampaign(branch, campaign) {
-    var set = campaign === "coh" ? COH_BRANCHES : BASE_BRANCHES;
-    return !!set[branch];
+    if (campaign === "coh") return !!COH_BRANCHES[branch];
+    if (campaign === "all") return !!BRANCHES[branch];
+    return !!BASE_BRANCHES[branch];
   }
 
   function passesCampaignFilter(item) {
@@ -707,7 +710,7 @@
   function regionHeader(regionKey) {
     var head = document.createElement("h2");
     head.className = "region-head";
-    head.textContent = regionKey ? I18n.regionName(regionKey) : "—";
+    head.textContent = regionKey ? I18n.regionName(regionKey) : "-";
     return head;
   }
 
@@ -776,7 +779,7 @@
   function writeUrlState() {
     if (!urlSyncReady) return;
     var params = new URLSearchParams();
-    // Default is side — omit so existing side links stay clean.
+    // Default is side - omit so existing side links stay clean.
     if (state.mode && state.mode !== "side") params.set("mode", state.mode);
     if (state.mode === "story" && state.campaign && state.campaign !== "base") {
       params.set("campaign", state.campaign);
@@ -985,14 +988,15 @@
       el.branchLabel.textContent =
         state.campaign === "coh" ? I18n.t("branchFilterCoh") : I18n.t("branchFilter");
     }
-    var cohBranches = state.campaign === "coh";
+    var showBaseBranches = state.campaign === "base" || state.campaign === "all";
+    var showCohBranches = state.campaign === "coh" || state.campaign === "all";
     var buttons = el.branchSwitch.querySelectorAll(".branch-opt");
     for (var i = 0; i < buttons.length; i++) {
       var btn = buttons[i];
       var key = btn.getAttribute("data-branch");
       var group = btn.getAttribute("data-branch-group");
-      if (group === "base") btn.hidden = cohBranches;
-      else if (group === "coh") btn.hidden = !cohBranches;
+      if (group === "base") btn.hidden = !showBaseBranches;
+      else if (group === "coh") btn.hidden = !showCohBranches;
       var on = key === state.branch;
       btn.classList.toggle("is-active", on);
       btn.setAttribute("aria-pressed", on ? "true" : "false");
@@ -1125,7 +1129,7 @@
     });
 
     // If the parent is filtered out (e.g. marked done while Status = Todo),
-    // keep unfinished sequence steps — and the parent for nesting context.
+    // keep unfinished sequence steps - and the parent for nesting context.
     pool.forEach(function (item) {
       if (!isRelatedStep(item) || !item.parentId) return;
       if (matched[item.id]) return;
@@ -1331,7 +1335,7 @@
       cohPill.textContent = I18n.t("pillCostOfHope");
       tags.appendChild(cohPill);
     }
-    // Skip type_main on story cards — pillMainStory already says the same thing.
+    // Skip type_main on story cards - pillMainStory already says the same thing.
     // Keep type pills for children (Related) and all Side-mode types.
     var pType = playerType(item);
     if (!(mainStory && pType === "main")) {
@@ -1646,7 +1650,8 @@
       el.branchSwitch.addEventListener("click", function (e) {
         var btn = e.target.closest(".branch-opt");
         if (!btn || !el.branchSwitch.contains(btn)) return;
-        if (btn.hidden) return;
+        // Do not gate on btn.hidden: CSS must hide unavailable options, but
+        // setBranch already rejects branches that are not valid for the campaign.
         var next = btn.getAttribute("data-branch");
         if (!next) return;
         setBranch(next);

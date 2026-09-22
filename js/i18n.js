@@ -36,7 +36,7 @@
     localStorage.setItem(KEY, code);
     document.documentElement.lang = code;
     var title = dig(packs[current], "ui.appTitle") || dig(packs.en, "ui.appTitle") || "PDA";
-    document.title = title + " — S.T.A.L.K.E.R. 2";
+    document.title = title + " - S.T.A.L.K.E.R. 2";
   }
 
   function t(key) {

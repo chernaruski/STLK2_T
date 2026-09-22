@@ -7,7 +7,7 @@
   --line-soft: #2e3624;
   --text: #e6ebd4;
   --muted: #8f9a72;
-  /* Zone phosphors — anomaly / HUD, not clean tech */
+  /* Zone phosphors - anomaly / HUD, not clean tech */
   --amber: #f0a030;
   --amber-dim: #b8741f;
   --amber-glow: rgba(240, 160, 48, 0.34);
@@ -28,9 +28,9 @@
   --font: "Exo 2", "Segoe UI", "Helvetica Neue", sans-serif;
   --display: "Oswald", "Exo 2", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", "Consolas", "Courier New", monospace;
-  /* Fluid body — gentle phone → wide (capped for dense UI on 2K/4K) */
+  /* Fluid body - gentle phone → wide (capped for dense UI on 2K/4K) */
   --fs: clamp(15px, 14px + 0.22vw, 16px);
-  /* Size roles — rem tracks root; meta/ui floors keep HUD stamps readable on phones */
+  /* Size roles - rem tracks root; meta/ui floors keep HUD stamps readable on phones */
   --fs-brand: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem);
   --fs-section: 0.95rem;
   --fs-title: 1.05rem;
@@ -67,7 +67,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Cyrillic reads denser — pull back tracking that was tuned for Latin tech fonts */
+/* Cyrillic reads denser - pull back tracking that was tuned for Latin tech fonts */
 html[lang="ru"] body {
   letter-spacing: 0;
   line-height: 1.5;
@@ -90,7 +90,7 @@ body {
   overflow-x: hidden;
 }
 
-/* —— Soft Zone field (behind PDA) —— */
+/* -- Soft Zone field (behind PDA) -- */
 .zone-field {
   position: fixed;
   inset: 0;
@@ -118,7 +118,7 @@ body {
     );
 }
 
-/* Ground haze — fog sitting on dirt */
+/* Ground haze - fog sitting on dirt */
 .zone-haze {
   position: absolute;
   left: -15%;
@@ -169,7 +169,7 @@ body {
   to { transform: translate3d(-2%, 2%, 0) scale(1); }
 }
 
-/* Global scanlines — dialed down so the field stays soft */
+/* Global scanlines - dialed down so the field stays soft */
 body::after {
   content: "";
   pointer-events: none;
@@ -271,7 +271,7 @@ body::after {
   border: 0;
 }
 
-/* —— PDA chassis —— */
+/* -- PDA chassis -- */
 .pda {
   position: relative;
   z-index: 1;
@@ -647,7 +647,7 @@ button:focus-visible {
   min-width: 0;
 }
 
-/* 1 — product brand (loudest) */
+/* 1 - product brand (loudest) */
 .brand-game {
   font-family: var(--display);
   font-weight: var(--fw-bold);
@@ -659,7 +659,7 @@ button:focus-visible {
   line-height: 1.05;
 }
 
-/* 2 — what this PDA does (secondary) */
+/* 2 - what this PDA does (secondary) */
 .rail-title {
   margin-top: 0.2rem;
   font-family: var(--mono);
@@ -671,7 +671,7 @@ button:focus-visible {
   line-height: 1.25;
 }
 
-/* 3 — telemetry chrome (quietest) */
+/* 3 - telemetry chrome (quietest) */
 .rail-unit {
   margin-top: 0.5rem;
   font-family: var(--mono);
@@ -922,7 +922,11 @@ button.mode-opt:focus-visible {
 }
 
 .campaign-switch[hidden],
-.branch-switch[hidden] {
+.branch-switch[hidden],
+button.campaign-opt[hidden],
+button.branch-opt[hidden],
+button.mode-opt[hidden],
+button.lang-opt[hidden] {
   display: none !important;
 }
 
@@ -1315,7 +1319,7 @@ button.branch-opt:focus-visible {
   border-left-style: dashed;
 }
 
-/* Main-story frame — distinct from side encounters (badge text required too) */
+/* Main-story frame - distinct from side encounters (badge text required too) */
 .card.is-main-story {
   border-color: var(--story-dim);
   border-left: 3px solid var(--story);
@@ -1450,7 +1454,7 @@ button.branch-opt:focus-visible {
   background: rgba(196, 90, 72, 0.08);
 }
 
-/* Field stamp — custom mark (native OS checkboxes read as white squares) */
+/* Field stamp - custom mark (native OS checkboxes read as white squares) */
 .mark {
   appearance: none;
   -webkit-appearance: none;
