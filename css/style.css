@@ -29,14 +29,14 @@
   --display: "Oswald", "Exo 2", "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", "Consolas", "Courier New", monospace;
   /* Fluid body - gentle phone → wide (capped for dense UI on 2K/4K) */
-  --fs: clamp(15px, 14px + 0.22vw, 16px);
+  --fs: clamp(14px, 13px + 0.2vw, 15px);
   /* Size roles - rem tracks root; meta/ui floors keep HUD stamps readable on phones */
-  --fs-brand: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem);
-  --fs-section: 0.95rem;
-  --fs-title: 1.05rem;
+  --fs-brand: clamp(1.1rem, 1rem + 0.25vw, 1.28rem);
+  --fs-section: 0.9rem;
+  --fs-title: 1rem;
   --fs-body: var(--fs);
-  --fs-ui: max(0.88rem, 13px);
-  --fs-meta: max(0.72rem, 11px);
+  --fs-ui: max(0.85rem, 12px);
+  --fs-meta: max(0.7rem, 10px);
   --fw-regular: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
@@ -1755,8 +1755,8 @@ body.is-booted .card.is-flash {
 @media (max-width: 640px) {
   :root {
     --track-wide: 0.05em;
-    --fs-section: 0.9rem;
-    --fs-title: 1rem;
+    --fs-section: 0.85rem;
+    --fs-title: 0.95rem;
   }
 
   .card {
@@ -1780,7 +1780,7 @@ body.is-booted .card.is-flash {
 
 @media (min-width: 1400px) {
   :root {
-    --fs-section: 1rem;
+    --fs-section: 0.95rem;
   }
 }
 
