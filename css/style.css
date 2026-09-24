@@ -1378,8 +1378,11 @@ button.branch-opt:focus-visible {
 }
 
 .region-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   margin: 1.15rem 0 0.5rem;
-  padding: 0.5rem 0.35rem 0.4rem 0.55rem;
+  padding: 0.5rem 0.35rem 0.45rem 0.55rem;
   font-family: var(--mono);
   font-size: var(--fs-section);
   letter-spacing: var(--track-wide);
@@ -1390,16 +1393,48 @@ button.branch-opt:focus-visible {
   position: sticky;
   top: 3.35rem;
   z-index: 30;
-  background: linear-gradient(180deg, var(--bg) 60%, rgba(12, 14, 10, 0.92));
+  background: linear-gradient(180deg, var(--bg) 70%, rgba(12, 14, 10, 0.94));
   text-shadow: 0 0 16px rgba(62, 184, 200, 0.28);
   box-shadow: inset 0 -1px 0 rgba(78, 200, 196, 0.08);
 }
 
-.region-head::before {
+.region-head-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.45rem 0.85rem;
+  flex-wrap: wrap;
+}
+
+.region-head-name::before {
   content: "⌖ ";
   opacity: 0.65;
   font-size: 0.85em;
   color: var(--cyan);
+}
+
+.region-head-stats {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  margin-left: auto;
+  font-size: var(--fs-meta);
+  letter-spacing: var(--track-tight);
+  text-transform: none;
+  text-shadow: none;
+}
+
+.region-head-count {
+  color: var(--cyan);
+}
+
+.region-head-missed {
+  color: var(--red);
+}
+
+.region-bar {
+  height: 5px;
 }
 
 .chips {

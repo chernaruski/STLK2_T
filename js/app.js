@@ -707,10 +707,81 @@
     return out;
   }
 
-  function regionHeader(regionKey) {
+  function emptyTally() {
+    return { done: 0, total: 0, missed: 0, pct: 0 };
+  }
+
+  function addToTally(tally, status) {
+    if (status === "missed") {
+      tally.missed += 1;
+      return;
+    }
+    tally.total += 1;
+    if (status === "done") tally.done += 1;
+  }
+
+  function finishTally(tally) {
+    tally.pct = tally.total ? Math.round((tally.done / tally.total) * 100) : 0;
+    return tally;
+  }
+
+  function progressLabel(stats) {
+    return I18n.t("progress")
+      .replace("{done}", String(stats.done))
+      .replace("{total}", String(stats.total))
+      .replace("{pct}", String(stats.pct));
+  }
+
+  function regionHeader(regionKey, stats) {
+    var tally = stats || emptyTally();
+    var zoneName = regionKey ? I18n.regionName(regionKey) : "-";
+    var label = progressLabel(tally);
+    var missedLabel = tally.missed ? tally.missed + " · " + I18n.t("statusMissed") : "";
+
     var head = document.createElement("h2");
     head.className = "region-head";
-    head.textContent = regionKey ? I18n.regionName(regionKey) : "-";
+
+    var row = document.createElement("div");
+    row.className = "region-head-row";
+
+    var name = document.createElement("span");
+    name.className = "region-head-name";
+    name.textContent = zoneName;
+
+    var meta = document.createElement("span");
+    meta.className = "region-head-stats";
+
+    var count = document.createElement("span");
+    count.className = "region-head-count";
+    count.textContent = label;
+    meta.appendChild(count);
+
+    if (missedLabel) {
+      var missed = document.createElement("span");
+      missed.className = "region-head-missed";
+      missed.textContent = missedLabel;
+      meta.appendChild(missed);
+    }
+
+    row.appendChild(name);
+    row.appendChild(meta);
+
+    var bar = document.createElement("div");
+    bar.className = "bar region-bar";
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", "100");
+    bar.setAttribute("aria-valuenow", String(tally.pct));
+    bar.setAttribute("aria-label", zoneName);
+    bar.setAttribute("aria-valuetext", missedLabel ? label + ". " + missedLabel : label);
+
+    var fill = document.createElement("span");
+    fill.className = "bar-fill";
+    fill.style.width = tally.pct + "%";
+    bar.appendChild(fill);
+
+    head.appendChild(row);
+    head.appendChild(bar);
     return head;
   }
 
@@ -1165,23 +1236,24 @@
 
     var pool = modeItems();
     var progressItems = progressPool(pool);
-    var missedCount = progressItems.filter(function (i) {
-      return getStatus(i.id) === "missed";
-    }).length;
-    var countable = progressItems.filter(function (i) {
-      return getStatus(i.id) !== "missed";
+    var overall = emptyTally();
+    var regionStats = {};
+    progressItems.forEach(function (item) {
+      var status = getStatus(item.id);
+      addToTally(overall, status);
+      var regionKey = item.region || "";
+      if (!regionStats[regionKey]) regionStats[regionKey] = emptyTally();
+      addToTally(regionStats[regionKey], status);
     });
-    var done = countable.filter(function (i) {
-      return getStatus(i.id) === "done";
-    }).length;
-    var total = countable.length;
-    var pct = total ? Math.round((done / total) * 100) : 0;
-    var progressLabel = I18n.t("progress")
-      .replace("{done}", String(done))
-      .replace("{total}", String(total))
-      .replace("{pct}", String(pct));
+    finishTally(overall);
+    Object.keys(regionStats).forEach(function (key) {
+      finishTally(regionStats[key]);
+    });
+    var pct = overall.pct;
+    var missedCount = overall.missed;
+    var progressText = progressLabel(overall);
     el.progressFill.style.width = pct + "%";
-    el.progressText.textContent = progressLabel;
+    el.progressText.textContent = progressText;
 
     var missedLabel = missedCount
       ? missedCount + " · " + I18n.t("statusMissed")
@@ -1200,7 +1272,7 @@
       el.progressBar.setAttribute("aria-valuenow", String(pct));
       el.progressBar.setAttribute(
         "aria-valuetext",
-        missedLabel ? progressLabel + ". " + missedLabel : progressLabel
+        missedLabel ? progressText + ". " + missedLabel : progressText
       );
     }
 
@@ -1250,7 +1322,7 @@
         var regionKey = entry.item.region || "";
         if (regionKey !== lastRegion) {
           lastRegion = regionKey;
-          frag.appendChild(regionHeader(regionKey));
+          frag.appendChild(regionHeader(regionKey, regionStats[regionKey]));
         }
         frag.appendChild(card(entry.item, entry.depth));
       });
